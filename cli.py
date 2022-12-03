@@ -6,7 +6,7 @@ import yaml
 import importlib
 
 
-TEMPLATE = """TEST_INPUT=\"\"\"\\
+TEMPLATE = """TEST_INPUT = \"\"\"\\
 \"\"\"
 
 
