@@ -1,4 +1,5 @@
 from lib.regex import parse_numbers
+from lib.array import split_list
 
 TEST_INPUT = """\
     [D]    
@@ -67,8 +68,9 @@ def solve_b(input_string=TEST_INPUT):
     crates, moves = parse_input(input_string)
 
     for (num_crates, stack_from, stack_to) in moves:
-        moving_crates = crates[stack_from - 1][-1 * num_crates :]
-        crates[stack_from - 1] = crates[stack_from - 1][: -1 * num_crates]
+        crates[stack_from - 1], moving_crates = split_list(
+            crates[stack_from - 1], -1 * num_crates
+        )
         crates[stack_to - 1].extend(moving_crates)
 
     print_crates(crates)
