@@ -37,6 +37,19 @@ def parse_input(input_string):
     return crates, moves
 
 
+def print_crates(crates: Crates):
+    max_stack_height = max(len(crate) for crate in crates)
+
+    for i in reversed(range(max_stack_height)):
+        row: list[str | None] = []
+        for stack in crates:
+            if len(stack) < i + 1:
+                row.append(None)
+            else:
+                row.append(stack[i])
+        print(" ".join([f"[{crate}]" if crate else "   " for crate in row]))
+
+
 def solve_a(input_string=TEST_INPUT):
     crates, moves = parse_input(input_string)
 
@@ -44,6 +57,8 @@ def solve_a(input_string=TEST_INPUT):
         for _ in range(num_crates):
             crate = crates[stack_from - 1].pop()
             crates[stack_to - 1].append(crate)
+
+    print_crates(crates)
 
     return "".join(stack[-1] for stack in crates)
 
@@ -55,5 +70,7 @@ def solve_b(input_string=TEST_INPUT):
         moving_crates = crates[stack_from - 1][-1 * num_crates :]
         crates[stack_from - 1] = crates[stack_from - 1][: -1 * num_crates]
         crates[stack_to - 1].extend(moving_crates)
+
+    print_crates(crates)
 
     return "".join(stack[-1] for stack in crates)
