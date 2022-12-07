@@ -1,7 +1,7 @@
 from day_07.no_space import solve_a, solve_b
 
-EXPECTED_SOLUTION_A = ""
-EXPECTED_SOLUTION_B = ""
+EXPECTED_SOLUTION_A = 95437
+EXPECTED_SOLUTION_B = 24933642
 
 
 def test_a():
