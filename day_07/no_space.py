@@ -45,4 +45,17 @@ def solve_a(input_string=TEST_INPUT):
 
 
 def solve_b(input_string=TEST_INPUT):
+    fs = parse_input(input_string)
+    total_size = sum(fs.size(name) for name in fs.ls())
+    unused_space = 70_000_000 - total_size
+    necessary_space = 30_000_000 - unused_space
+    smallest_deletable_size = 30_000_000
+    for name, cdir in fs.walk():
+        if isinstance(cdir[name], dict):
+            size = fs.size(name, cdir)
+            if size >= necessary_space and size < smallest_deletable_size:
+                smallest_deletable_size = size
+
+    return smallest_deletable_size
+
     return parse_input(input_string)
