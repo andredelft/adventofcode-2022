@@ -10,7 +10,7 @@ TEMPLATE = """TEST_INPUT = \"\"\"\\
 \"\"\"
 
 
-def parse_input(input_string):
+def parse_input(input_string: str):
     return input_string
 
 
