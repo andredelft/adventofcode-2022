@@ -15,17 +15,17 @@ def parse_input(input_string: str):
 
 
 def solve_a(input_string=TEST_INPUT):
-    return parse_input(input_string)
+    parse_input(input_string)
 
 
 def solve_b(input_string=TEST_INPUT):
-    return parse_input(input_string)
+    parse_input(input_string)
 """
 
 TEST_TEMPLATE = """from {day_path}.{module_name} import solve_a, solve_b
 
-EXPECTED_SOLUTION_A = ""
-EXPECTED_SOLUTION_B = ""
+EXPECTED_SOLUTION_A = None
+EXPECTED_SOLUTION_B = None
 
 
 def test_a():
@@ -112,4 +112,7 @@ def solve(part, day):
 def submit(part, day):
     with open(get_day_path(day) / "input.txt") as f:
         solution = get_solution(part, day, f.read())
+        if solution == None:
+            click.echo("Nothing to submit")
+            return
         aocd_submit(solution, part=part, day=day)
