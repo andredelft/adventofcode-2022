@@ -1,7 +1,7 @@
 from day_09.rope_bridge import solve_a, solve_b
 
-EXPECTED_SOLUTION_A = ""
-EXPECTED_SOLUTION_B = ""
+EXPECTED_SOLUTION_A = 13
+EXPECTED_SOLUTION_B = 36
 
 
 def test_a():
