@@ -1,7 +1,7 @@
 from day_11.monkey_in_the_middle import solve_a, solve_b
 
 EXPECTED_SOLUTION_A = 10605
-EXPECTED_SOLUTION_B = None
+EXPECTED_SOLUTION_B = 2713310158
 
 
 def test_a():

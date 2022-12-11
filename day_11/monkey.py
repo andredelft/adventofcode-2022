@@ -1,6 +1,3 @@
-from typing import Callable
-
-
 class Monkey(object):
     def __init__(
         self,
@@ -20,13 +17,13 @@ class Monkey(object):
     def perform_operation(self, old: int):
         return eval(self.operation)
 
-    def inspect(self):
+    def inspect(self, relief_factor=3):
         throw_dict = {self.throw_true: [], self.throw_false: []}
 
         for item in self.items:
             self.num_inspections += 1
             item = self.perform_operation(item)
-            item //= 3
+            item %= relief_factor
             if item % self.divisible_by == 0:
                 throw_dict[self.throw_true].append(item)
             else:

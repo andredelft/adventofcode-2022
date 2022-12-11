@@ -1,4 +1,5 @@
 import re
+import math
 from lib.regex import parse_numbers, parse_number
 from lib.array import product
 from .monkey import Monkey
@@ -61,4 +62,12 @@ def solve_a(input_string=TEST_INPUT):
 
 
 def solve_b(input_string=TEST_INPUT):
-    parse_input(input_string)
+    monkeys = parse_input(input_string)
+    least_common_multiple = math.lcm(*[monkey.divisible_by for monkey in monkeys])
+    for _ in range(10_000):
+        for monkey in monkeys:
+            throw_dict = monkey.inspect(relief_factor=least_common_multiple)
+            for i, items in throw_dict.items():
+                monkeys[i].catch(items)
+
+    return product(sorted([monkey.num_inspections for monkey in monkeys])[-2:])
