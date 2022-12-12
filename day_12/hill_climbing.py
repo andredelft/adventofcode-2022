@@ -55,21 +55,25 @@ def iter_indices(height, width):
             yield i, j
 
 
-def dijkstra(field: Field, start: Coordinate, end: Coordinate):
+def dijkstra(field: Field, start: Coordinate, reversed=False):
     height = len(field)
     width = len(field[0])
     unvisited = set((i, j) for i, j in iter_indices(height, width))
 
     current_node = start
     current_distance = 0
-    shortest_distances = {start: current_distance}
-    distance_sources = {}
+    shortest_distances: dict[Coordinate, int] = {start: current_distance}
+    distance_sources: dict[Coordinate, Coordinate] = {}
     while current_node:
         y, x = current_node
         accessible_neighbours = [
             (i, j)
             for i, j in neighbours(current_node, height, width)
-            if (i, j) in unvisited and field[i][j] <= field[y][x] + 1
+            if (i, j) in unvisited
+            and (
+                (not reversed and field[i][j] <= field[y][x] + 1)
+                or (reversed and field[i][j] >= field[y][x] - 1)
+            )
         ]
 
         for i, j in accessible_neighbours:
@@ -90,11 +94,7 @@ def dijkstra(field: Field, start: Coordinate, end: Coordinate):
             default=None,
         )
 
-    trail = [end]
-    while trail[0] != start:
-        trail.insert(0, distance_sources[trail[0]])
-
-    return trail
+    return distance_sources
 
 
 def draw_trail(field: Field, trail: list[Coordinate]):
@@ -114,9 +114,22 @@ def draw_trail(field: Field, trail: list[Coordinate]):
     time.sleep(0.01)
 
 
+def find_trail(
+    distance_sources: dict[Coordinate, Coordinate], start: Coordinate, end: Coordinate
+):
+    trail = [end]
+
+    while trail[0] != start:
+        trail.insert(0, distance_sources[trail[0]])
+
+    return trail
+
+
 def solve_a(input_string=TEST_INPUT):
     field, start, end = parse_input(input_string)
-    trail = dijkstra(field, start, end)
+    distance_sources = dijkstra(field, start)
+
+    trail = find_trail(distance_sources, start, end)
 
     draw_trail(field, trail)
     return len(trail) - 1
@@ -126,6 +139,8 @@ def solve_b(input_string=TEST_INPUT):
     field, _, end = parse_input(input_string)
     height = len(field)
     width = len(field[0])
+
+    distance_sources = dijkstra(field, end, reversed=True)  # Dijkstra starting from end
 
     # We only need to check a's that are directly next to some b
     possible_starts = [
@@ -137,7 +152,7 @@ def solve_b(input_string=TEST_INPUT):
 
     shortest_trail = None
     for start in tqdm(possible_starts):
-        trail = dijkstra(field, start, end)
+        trail = find_trail(distance_sources, end, start)
         if not shortest_trail or len(trail) < len(shortest_trail):
             shortest_trail = trail
 
