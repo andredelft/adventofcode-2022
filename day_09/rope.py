@@ -1,4 +1,5 @@
 import time
+from lib.coordinates import Coordinates, get_dimensions
 
 
 class OutOfBounds(Exception):
@@ -7,7 +8,7 @@ class OutOfBounds(Exception):
 
 class Rope(object):
 
-    tail_history = set([(0, 0)])
+    tail_history: Coordinates = set([(0, 0)])
 
     def __init__(self, num_knots: int):
         self.rope = [[0, 0] for _ in range(num_knots)]
@@ -20,14 +21,7 @@ class Rope(object):
 
     def print_visited(self):
         # Find dimensions of the field
-        x = [0, 0]
-        y = [0, 0]
-
-        for coord in self.tail_history:
-            y[0] = min(coord[0] - 1, y[0])
-            y[1] = max(coord[0] + 2, y[1])
-            x[0] = min(coord[1] - 1, x[0])
-            x[1] = max(coord[1] + 2, x[1])
+        y, x = get_dimensions(self.tail_history)
 
         lines = []
         for i in range(*y):
